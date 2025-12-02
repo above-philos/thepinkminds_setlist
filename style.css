@@ -1,0 +1,186 @@
+/* 基本リセットとフォント */
+body {
+    font-family: 'Arial', 'Meiryo', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8; /* 背景は少し明るめに */
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* --- ヘッダー（青基調） --- */
+header {
+    background-color: #007bff; /* メインカラーの青 */
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    letter-spacing: 2px;
+}
+
+header p {
+    margin-top: 5px;
+    font-size: 1em;
+}
+
+/* --- ナビゲーション（ピンク基調） --- */
+nav {
+    background-color: #ff69b4; /* ピンク */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #ff45a6; /* ホバーで濃いピンク */
+}
+
+/* --- メインコンテンツ --- */
+main {
+    padding: 40px 0;
+}
+
+section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    color: #007bff; /* 見出しは青 */
+    border-bottom: 2px solid #ff9933; /* オレンジのラインで区切り */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* --- セトリカード（一覧） --- */
+.setlist-card {
+    background-color: #fff3e6; /* 薄いオレンジの背景で目立たせる */
+    border-left: 5px solid #ff9933; /* オレンジのアクセント */
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.setlist-card h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.setlist-card .venue {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.detail-btn {
+    background-color: #ff69b4; /* ボタンはピンク */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.detail-btn:hover {
+    background-color: #ff45a6;
+}
+
+/* --- ランキングアイテム --- */
+.ranking-item {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+}
+
+.ranking-item .rank {
+    font-size: 1.5em;
+    margin-right: 15px;
+    font-style: italic;
+}
+
+.ranking-item .title {
+    font-size: 1.1em;
+}
+
+/* ランキングごとの色分け */
+.blue-accent { background-color: #007bff; }
+.orange-accent { background-color: #ff9933; }
+.pink-accent { background-color: #ff69b4; }
+
+
+/* --- フッター --- */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.8em;
+}
+
+/* --- 追加CSS: タイトルをリンク化してデザインを整える --- */
+.card-link-title {
+    /* リンクのデフォルト装飾を解除 */
+    text-decoration: none; 
+    color: inherit; /* 親要素（.setlist-card）の色を継承 */
+    display: block; /* クリック領域を広げる */
+    flex-grow: 1; /* スペース全体を使う */
+}
+
+/* ホバー時の装飾：クリックできることを視覚的に示す */
+.card-link-title:hover h3 {
+    color: #ff69b4; /* ホバーでピンクに変化 */
+    text-decoration: underline; /* 下線を引く */
+    transition: color 0.2s;
+}
+
+/* セトリカード内のボタンは不要になったので非表示にする */
+.detail-btn {
+    display: none;
+}
+
+/* .setlist-card のレイアウトを修正 (タイトルが広い領域を持つように) */
+.setlist-card {
+    /* flex-direction: column; が適切かもしれませんが、既存のデザインを維持しつつ調整します */
+    align-items: flex-start; /* タイトルを左寄せに */
+    flex-direction: column;
+}
+
+/* venueとタイトルを少し離す */
+.setlist-card .venue {
+    margin-top: 5px;
+}
