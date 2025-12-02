@@ -1,0 +1,2521 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE PINK MINDS セットリスト</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h1,
+        h2 {
+            color: #d81b60;
+            /* ピンク色 */
+            border-bottom: 2px solid #f8bbd0;
+            padding-bottom: 5px;
+            margin-top: 20px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+
+        .setlist-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .setlist-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-link-title {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card-link-title h3 {
+            margin: 0;
+            font-size: 1.1em;
+            color: #00796b;
+            /* 緑色 */
+        }
+
+        /* モーダル関連 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .song-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .song-list li {
+            padding: 5px 0;
+            border-bottom: 1px dotted #eee;
+        }
+
+        .song-number {
+            font-weight: bold;
+            color: #d81b60;
+            margin-right: 5px;
+        }
+
+        .encore {
+            font-size: 0.8em;
+            color: #9c27b0;
+            background-color: #f3e5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-left: 10px;
+        }
+
+        /* ランキング関連のCSSを追加 */
+        .ranking-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: rank-counter;
+        }
+
+        .ranking-list li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .rank-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            width: 40px;
+            text-align: center;
+            margin-right: 15px;
+        }
+
+        .rank-gold {
+            color: #FFD700;
+        }
+
+        .rank-silver {
+            color: #C0C0C0;
+        }
+
+        .rank-bronze {
+            color: #CD7F32;
+        }
+
+        .song-name {
+            flex-grow: 1;
+            font-size: 1.1em;
+        }
+
+        .count {
+            color: #777;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🎙️ THE PINK MINDS セットリスト一覧</h1>
+
+    <section id="setlists-section">
+        <h2>🗓️ ライブ一覧 (日付の新しい順)</h2>
+        <div id="setlists">
+        </div>
+        <hr>
+    </section>
+
+    <section id="ranking-section">
+        <h2>🏆 歌唱回数ランキング </h2>
+        <p style="font-size: 0.9em; color: #555;">※OPSE, EDSE, MC, '-----'、およびメンバー名が入った特殊な表記（例：(つ輝)）を除外してカウントしています。</p>
+        <div id="ranking">
+        </div>
+    </section>
+
+    <div id="setlistModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modal-body">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ★★★ ライブデータをここに記述します (全て2025年に修正) ★★★
+        const ALL_LIVE_DATA = [
+            {
+                "id": "20251129_ocrest",
+                "title": "Chemistry LiVE with LiVS unknown vol.5",
+                "date": "2025.11.29",
+                "venue": "渋谷 Spotify O-crest",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "MC" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 7, "song": "MC" },
+                    { "order": 8, "song": "FINE heART" },
+                    { "order": 9, "song": "BEGGiNG" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251123_aoyama",
+                "title": "diig and…vol.9",
+                "date": "2025.11.23",
+                "venue": "青山月見ル君想フ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "MC" },
+                    { "order": 4, "song": "じゃない、がしたい" },
+                    { "order": 5, "song": "ピンクメトセラ" },
+                    { "order": 6, "song": "CUTTING EDGE" },
+                    { "order": 7, "song": "MC" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "FINE heART" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251117_marz_vol3",
+                "title": "月刊桃色心臓 vol.3「友愛と業」",
+                "date": "2025.11.17",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "チュープリ" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "イミテーションガール" },
+                    { "order": 7, "song": "じゃない、がしたい" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 10, "song": "mc" },
+                    { "order": 11, "song": "A INNOCENCE" },
+                    { "order": 12, "song": "FINE heART" },
+                    { "order": 13, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251114_futurehall",
+                "title": "#ﾆｷﾌﾟﾚ『シブヤチャンプルー』",
+                "date": "2025.11.14",
+                "venue": "渋谷近未来会館",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "family name" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "CUTTING EDGE" },
+                    { "order": 9, "song": "FINE heART" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251114_shuffle",
+                "title": "東出つ輝生誕祭2025",
+                "date": "2025.11.14",
+                "venue": "吉祥寺SHUFFLE",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "運命テッテレー" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "前説Advance" },
+                    { "order": 5, "song": "ANTI SOCIAL PRINCESS（つ輝）" },
+                    { "order": 6, "song": "真っ赤に染まったクリスマス（つ輝）" },
+                    { "order": 7, "song": "呪いは水色（つ輝・陽南）" },
+                    { "order": 8, "song": "TOKYO BLACK HOLE（つ輝・すず奈）" },
+                    { "order": 9, "song": "KEKKON（つ輝）" },
+                    { "order": 10, "song": "天国ランキング（つ輝）" },
+                    { "order": 11, "song": "TOBUTORI（つ輝）" },
+                    { "order": 12, "song": "mc" },
+                    { "order": 13, "song": "FINE heART" },
+                    { "order": 14, "song": "アナログシンコペーション" },
+                    { "order": 15, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251107_ksdream",
+                "title": "K’S DREAM 30th ANNIVERSARY「DAY BELIEVE DREAMER vol.7」",
+                "date": "2025.11.07",
+                "venue": "稲毛K'S DREAM",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "draw (A) drow" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "非国民的ヒーロー" },
+                    { "order": 9, "song": "mc" },
+                    { "order": 10, "song": "FINE heART" },
+                    { "order": 11, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 12, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251103_jam",
+                "title": "ねおち主催「待ち合わせの、11月。」",
+                "date": "2025.11.03",
+                "venue": "西永福JAM",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "最終形態前夜SCAPE" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "ピンクメトセラ" },
+                    { "order": 6, "song": "じゃない、がしたい" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "FINE heART" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251029_kouenji",
+                "title": "Beat Happening！音楽の時間には教えてくれない最高ミュージック達！",
+                "date": "2025.10.29",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "CUTTING EDGE" },
+                    { "order": 6, "song": "じゃない、がしたい" },
+                    { "order": 7, "song": "BE BY BE BYE" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "FINE heART" },
+                    { "order": 10, "song": "mc" },
+                    { "order": 11, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251023_chelsea",
+                "title": "棘-おどろ-定期公演【棘とおどろ】其ノ五十八〜happy Halloween 2マンSP！！〜",
+                "date": "2025.10.23",
+                "venue": "渋谷CHELSEA HOTEL",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "family name" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "-----" },
+                    { "order": 8, "song": "ノーレシピ♡LOVE" },
+                    { "order": 9, "song": "JUSTadICE" },
+                    { "order": 10, "song": "CO LO s NA" },
+                    { "order": 11, "song": "じゃない、がしたい" },
+                    { "order": 12, "song": "怪獣GIGA" },
+                    { "order": 13, "song": "FINE heART" },
+                    { "order": 14, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251022_marz_vol2",
+                "title": "月刊桃色心臓 vol.2「乙女と戦」",
+                "date": "2025.10.22",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "BEGGiNG" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "BE BY BE BYE" },
+                    { "order": 6, "song": "じゃない、がしたい" },
+                    { "order": 7, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 8, "song": "FINE heART" },
+                    { "order": 9, "song": "SHINEMAGIC" },
+                    { "order": 10, "song": "mc" },
+                    { "order": 11, "song": "CUTTING EDGE" },
+                    { "order": 12, "song": "最終形態前夜SCAPE" },
+                    { "order": 13, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251018_gyuunou_mini_night",
+                "title": "ギュウ農フェス mini『この秋、運命は勇者に微笑む』～夜の部～",
+                "date": "2025.10.18",
+                "venue": "大塚hearts＋",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "乙女の心臓" },
+                    { "order": 5, "song": "FINE heART" },
+                    { "order": 6, "song": "じゃない、がしたい" },
+                    { "order": 7, "song": "CRUSH ALONE" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251015_kouenji",
+                "title": "Beat Happening！高円寺絶対最強3MAN GIG!!!",
+                "date": "2025.10.15",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "じゃない、がしたい" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "FINE heART" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251013_oneman_1",
+                "title": "THE PINK MINDS 秋の超♡本気ライブ (1部：無料ライブ)",
+                "date": "2025.10.13",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "眼球にGo!" },
+                    { "order": 4, "song": "チュープリ" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "CO LO s NA" },
+                    { "order": 7, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 8, "song": "怪獣GIGA" },
+                    { "order": 9, "song": "ピンクメトセラ" },
+                    { "order": 10, "song": "最終形態前夜SCAPE" },
+                    { "order": 11, "song": "じゃない、がしたい" },
+                    { "order": 12, "song": "CUTTING EDGE" },
+                    { "order": 13, "song": "FINE heART" },
+                    { "order": 14, "song": "BEGGiNG" },
+                    { "order": 15, "song": "mc" },
+                    { "order": 16, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20251013_oneman_2",
+                "title": "THE PINK MINDS 秋の超♡本気ライブ (2部：リベンジワンマン)",
+                "date": "2025.10.13",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "family name" },
+                    { "order": 5, "song": "天国ランキング" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "じゃない、がしたい" },
+                    { "order": 8, "song": "レディースコミック" },
+                    { "order": 9, "song": "瞬間最大me(すず奈)" },
+                    { "order": 10, "song": "ムゲン来世(つ輝)" },
+                    { "order": 11, "song": "NIGHT ON THE PLANET(陽南)" },
+                    { "order": 12, "song": "最終形態前夜SCAPE" },
+                    { "order": 13, "song": "メタメメント" },
+                    { "order": 14, "song": "draw (A) drow" },
+                    { "order": 15, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 16, "song": "FINE heART" }
+                ],
+                "encore": [
+                    { "order": 1, "song": "非国民的ヒーロー" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "FINE heART" },
+                    { "order": 4, "song": "EDSE" }
+                ]
+            },
+            {
+                "id": "20250929_kouenji",
+                "title": "Beat Happening！高円寺で逢いましょう。",
+                "date": "2025.09.29",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "CO LO s NA" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "FINE heART" },
+                    { "order": 7, "song": "ノーレシピ♡LOVE" },
+                    { "order": 8, "song": "非国民的ヒーロー" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250922_marz_vol1",
+                "title": "月刊桃色心臓vol.1 「萌芽と猫」",
+                "date": "2025.09.22",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "CUTTING EDGE" },
+                    { "order": 3, "song": "レディースコミック" },
+                    { "order": 4, "song": "ピンクメトセラ" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "怪獣GIGA" },
+                    { "order": 8, "song": "じゃない、がしたい" },
+                    { "order": 9, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 10, "song": "FINE heART" },
+                    { "order": 11, "song": "ノーレシピ♡LOVE" },
+                    { "order": 12, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250920_shuffle",
+                "title": "#武蔵野音楽祭 19th ANNIVERSARY 蓮の音カーニバルプレミアム",
+                "date": "2025.09.20",
+                "venue": "吉祥寺SHUFFLE",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "CUTTING EDGE" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "じゃない、がしたい" },
+                    { "order": 5, "song": "CO LO s NA" },
+                    { "order": 6, "song": "JUSTadICE" },
+                    { "order": 7, "song": "FINE heART" },
+                    { "order": 8, "song": "ノーレシピ♡LOVE" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250917_kouenji",
+                "title": "Beat Happening！3700回目の夜。",
+                "date": "2025.09.17",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "ノーレシピ♡LOVE" },
+                    { "order": 2, "song": "じゃない、がしたい" },
+                    { "order": 3, "song": "ピンクメトセラ" },
+                    { "order": 4, "song": "怪獣GIGA" },
+                    { "order": 5, "song": "メタメメント" },
+                    { "order": 6, "song": "CO LO s NA" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "FINE heART" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250914_releaserevent_final",
+                "title": "2nd Single『FINE heART/じゃない、がしたい』リリースイベント ファイナル",
+                "date": "2025.09.14",
+                "venue": "エンタバアキバ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "FINE heART" },
+                    { "order": 5, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 6, "song": "じゃない、がしたい" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250907_releaserevent_ikebukuro",
+                "title": "2nd Single『FINE heART/じゃない、がしたい』リリースイベント",
+                "date": "2025.09.07",
+                "venue": "タワーレコード池袋店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "FINE heART" },
+                    { "order": 3, "song": "じゃない、がしたい" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "AGE OF ZOC" },
+                    { "order": 6, "song": "イミテーションガール" },
+                    { "order": 7, "song": "ノーレシピ♡LOVE" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250906_kouenji_kinoh",
+                "title": "Beat Happening！きのホ。とピンク。",
+                "date": "2025.09.06",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "じゃない、がしたい" },
+                    { "order": 5, "song": "CUTTING EDGE" },
+                    { "order": 6, "song": "メタメメント" },
+                    { "order": 7, "song": "怪獣GIGA" },
+                    { "order": 8, "song": "FINE heART" },
+                    { "order": 9, "song": "mc" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250904_releaserevent_kinshicho",
+                "title": "2nd Single『FINE heART/じゃない、がしたい』リリースイベント",
+                "date": "2025.09.04",
+                "venue": "タワーレコード錦糸町パルコ店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "じゃない、がしたい" },
+                    { "order": 3, "song": "レディースコミック" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "FINE heART" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250902_kouenji_shingakki",
+                "title": "Beat Happening！新学期、隣の席の友達に教えたい最高の音楽達。",
+                "date": "2025.09.02",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "FINE heART" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "じゃない、がしたい" },
+                    { "order": 5, "song": "乙女の心臓" },
+                    { "order": 6, "song": "ノーレシピ♡LOVE" },
+                    { "order": 7, "song": "EDSE" },
+                    { "order": 8, "song": "FINE heART" },
+                    { "order": 9, "song": "DON'T TRUST TEENAGER" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250826_marz",
+                "title": "月刊桃色椿宝座「青純と君」",
+                "date": "2025.08.26",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "じゃない、がしたい" },
+                    { "order": 3, "song": "draw (A) drow" },
+                    { "order": 4, "song": "メタメメント" },
+                    { "order": 5, "song": "CUTTING EDGE" },
+                    { "order": 6, "song": "天国ランキング" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "ノーレシピ♡LOVE" },
+                    { "order": 9, "song": "FINE heART" },
+                    { "order": 10, "song": "BEGGiNG" },
+                    { "order": 11, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250821_kouenji",
+                "title": "Beat Happening！鳴り止まないロックミュージック達。",
+                "date": "2025.08.21",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "メタメメント" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "FINE heART" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250819_ikebukuro",
+                "title": "月刊zocx vol.3",
+                "date": "2025.08.19",
+                "venue": "池袋手刀",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "じゃない、がしたい" },
+                    { "order": 5, "song": "FINE heART" },
+                    { "order": 6, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250817_marz_answer3",
+                "title": "月刊PAM Presents 「ANSWER」vol.3 supported by脱却",
+                "date": "2025.08.17",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "FINE heART" },
+                    { "order": 6, "song": "CUTTING EDGE" },
+                    { "order": 7, "song": "ピンクメトセラ" },
+                    { "order": 8, "song": "じゃない、がしたい" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250813_kouenji_summer",
+                "title": "Beat Happening！夏の日の最高POP MUSIC達！",
+                "date": "2025.08.13",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "SHINEMAGIC" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "CO LO s NA" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "怪獣GIGA" },
+                    { "order": 9, "song": "じゃない、がしたい" },
+                    { "order": 10, "song": "FINE heART" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250806_releaserevent_kinshicho_2",
+                "title": "2nd Single『FINE heART/じゃない、がしたい』リリースイベント",
+                "date": "2025.08.06",
+                "venue": "タワーレコード錦糸町パルコ店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "CRUSH ALONE" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "FINE heART" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250803_releaserevent_vv_1",
+                "title": "2nd Single『FINE heART/じゃない、がしたい』リリースイベント (1部)",
+                "date": "2025.08.03",
+                "venue": "ヴィレッジヴァンガード＋PLUS",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "FINE heART" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "乙女の心臓" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250803_releaserevent_vv_2",
+                "title": "2nd Single『FINE heART/じゃない、がしたい』リリースイベント (2部)",
+                "date": "2025.08.03",
+                "venue": "ヴィレッジヴァンガード＋PLUS",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "FINE heART" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "CUTTING EDGE" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250802_releaseevent_ikebukuro",
+                "title": "2nd Single『FINE heART / じゃない、がしたい』リリース記念イベント",
+                "date": "2025.08.02",
+                "venue": "タワーレコード池袋店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "じゃない、がしたい" },
+                    { "order": 5, "song": "FINE heART" },
+                    { "order": 6, "song": "MC" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250730_releaserevent_shinjuku",
+                "title": "2nd Single『FINE heART/じゃない、がしたい』リリースイベント 発売日",
+                "date": "2025.07.30",
+                "venue": "タワーレコード新宿店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "FINE heART" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250729_vv_shibuya",
+                "title": "2nd Single『FINE heART/じゃない、がしたい』リリースイベント",
+                "date": "2025.07.29",
+                "venue": "ヴィレッジヴァンガード渋谷本店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "FINE heART" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "レディースコミック" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "MC" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250724_marz_saika",
+                "title": "月刊桃色椿宝座「最果と歩」",
+                "date": "2025.07.24",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "AGE OF ZOC" },
+                    { "order": 3, "song": "CRUSH ALONE" },
+                    { "order": 4, "song": "family name" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "ひらいて" },
+                    { "order": 7, "song": "怪獣GIGA" },
+                    { "order": 8, "song": "FINE heART" },
+                    { "order": 9, "song": "ノーレシピ♡LOVE" },
+                    { "order": 10, "song": "EDSE" },
+                    { "order": 11, "song": "flop" },
+                    { "order": 12, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250721_oneman",
+                "title": "THE PINK MINDS \"FINE heART\"発売記念ワンマン『じゃない、がしたい』",
+                "date": "2025.07.21",
+                "venue": "吉祥寺SHUFFLE",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "FINE heART" },
+                    { "order": 3, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "ノーレシピ♡LOVE" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "非国民的ヒーロー" },
+                    { "order": 8, "song": "イミテーションガール" },
+                    { "order": 9, "song": "乙女の心臓" },
+                    { "order": 10, "song": "ピンクメトセラ" },
+                    { "order": 11, "song": "レディースコミック" },
+                    { "order": 12, "song": "CUTTING EDGE" },
+                    { "order": 13, "song": "メタメメント" },
+                    { "order": 14, "song": "じゃない、がしたい" }
+                ],
+                "encore": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "FINE heART" },
+                    { "order": 4, "song": "EDSE" }
+                ]
+            },
+            {
+                "id": "20250720_releaserevent_yokohama_1",
+                "title": "2nd Single『FINE heART / じゃない、がしたい』リリースイベント (1部)",
+                "date": "2025.07.20",
+                "venue": "タワーレコード横浜ビブレ店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "FINE heART" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250720_releaserevent_yokohama_2",
+                "title": "2nd Single『FINE heART / じゃない、がしたい』リリースイベント (2部)",
+                "date": "2025.07.20",
+                "venue": "タワーレコード横浜ビブレ店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "JUSTadICE" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "じゃない、がしたい" },
+                    { "order": 5, "song": "FINE heART" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250719_releaserevent_shinjuku",
+                "title": "2nd Single『FINE heART / じゃない、がしたい』リリースイベント",
+                "date": "2025.07.19",
+                "venue": "タワーレコード新宿店9F イベントスペース",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "CO LO s NA" },
+                    { "order": 3, "song": "FINE heART" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "じゃない、がしたい" },
+                    { "order": 6, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250719_aisotope",
+                "title": "二丁目の魁カミングアウト『FREE GAY 2MAN LIVE』",
+                "date": "2025.07.19",
+                "venue": "新宿二丁目AiSOTOPE LOUNGE",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "最終形態前夜SCAPE" },
+                    { "order": 3, "song": "怪獣GIGA" },
+                    { "order": 4, "song": "family name" },
+                    { "order": 5, "song": "CUTTING EDGE" },
+                    { "order": 6, "song": "ノーレシピ♡LOVE" },
+                    { "order": 7, "song": "断捨離彼氏" },
+                    { "order": 8, "song": "draw (A) drow" },
+                    { "order": 9, "song": "FINE heART" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250715_kouenji_rnr",
+                "title": "Beat Happening！高円寺真夏のR&R PANIC！",
+                "date": "2025.07.15",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "FINE heART" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "draw (A) drow" },
+                    { "order": 5, "song": "CO LO s NA" },
+                    { "order": 6, "song": "ノーレシピ♡LOVE" },
+                    { "order": 7, "song": "BEGGiNG" },
+                    { "order": 8, "song": "EDSE" },
+                    { "order": 9, "song": "FINE heART" },
+                    { "order": 10, "song": "DON'T TRUST TEENAGER" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250713_osaka",
+                "title": "こぐまカリーPresents「Mash UP!」",
+                "date": "2025.07.13",
+                "venue": "大阪 心斎橋SUNHALL",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "CUTTING EDGE" },
+                    { "order": 6, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 7, "song": "FINE heART" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250711_kouenji_pop",
+                "title": "Beat Happening！真夏の絶対POP PANIC！",
+                "date": "2025.07.11",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "乙女の心臓" },
+                    { "order": 3, "song": "IDOL SONG" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "ノーレシピ♡LOVE" },
+                    { "order": 6, "song": "CRUSH ALONE" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "怪獣GIGA" },
+                    { "order": 9, "song": "FINE heART" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250701_kabukicho_live",
+                "title": "2nd Single『FINE heART / じゃない、がしたい』リリースイベント",
+                "date": "2025.07.01",
+                "venue": "東急歌舞伎町タワー",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "SHINEMAGIC" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "MC" },
+                    { "order": 5, "song": "FINE heART" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "MC" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250629_releaserevent_ikebukuro_2",
+                "title": "2nd Single『FINE heART / じゃない、がしたい』リリースイベント",
+                "date": "2025.06.29",
+                "venue": "タワーレコード池袋店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "family name" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "FINE heART" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250626_marz_shisai",
+                "title": "月刊桃色椿宝座「司祭と雨」",
+                "date": "2025.06.26",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "JUSTadICE" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "CUTTING EDGE" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "怪獣GIGA" },
+                    { "order": 9, "song": "mc" },
+                    { "order": 10, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 11, "song": "FINE heART" },
+                    { "order": 12, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250624_releaserevent_kinshicho",
+                "title": "2nd Single『FINE heART / じゃない、がしたい』リリース記念イベント",
+                "date": "2025.06.24",
+                "venue": "タワーレコード錦糸町パルコ店",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "怪獣GIGA" },
+                    { "order": 6, "song": "CUTTING EDGE" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250623_releaserevent_shibuya",
+                "title": "2nd Single『FINE heART / じゃない、がしたい』リリース記念イベント",
+                "date": "2025.06.23",
+                "venue": "HMV&BOOKS SHIBUYA",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "BEGGiNG" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250615_birthdaysuzuna",
+                "title": "北川すず奈ちゃんお誕生日会「to be bornなう（2025/06/15 20:37:333）」",
+                "date": "2025.06.15",
+                "venue": "吉祥寺SHUFFLE",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ミス・フォーチュンラブ" },
+                    { "order": 3, "song": "無修正ロマンティック～延長戦～ (すず奈・つ輝)" },
+                    { "order": 4, "song": "勹″ッと＜るSUMMER (すず奈・陽南)" },
+                    { "order": 5, "song": "ノーレシピ♡LOVE" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "VOID" },
+                    { "order": 8, "song": "だれでも絶滅少女" },
+                    { "order": 9, "song": "LADY BABY BLUE" },
+                    { "order": 10, "song": "最終形態前夜SCAPE" },
+                    { "order": 11, "song": "mc" },
+                    { "order": 12, "song": "マジックミラー" },
+                    { "order": 13, "song": "ZOC実験室" },
+                    { "order": 14, "song": "BEGGiNG" },
+                    { "order": 15, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250612_kouenji_idol",
+                "title": "Beat Happening！教科書には載らない最高のアイドルミュージック達！",
+                "date": "2025.06.12",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "CRUSH ALONE" },
+                    { "order": 3, "song": "CO LO s NA" },
+                    { "order": 4, "song": "JUSTadICE" },
+                    { "order": 5, "song": "ノーレシピ♡LOVE" },
+                    { "order": 6, "song": "AGE OF ZOC" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 9, "song": "最終形態前夜SCAPE" },
+                    { "order": 10, "song": "family name" },
+                    { "order": 11, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250607_gyunou_fes_mini_1",
+                "title": "ギュウ農フェス mini SP (1部)",
+                "date": "2025.06.07",
+                "venue": "宇都宮",
+                "setlist": [
+                    { "order": 1, "song": "SE" },
+                    { "order": 2, "song": "怪獣GIGA" },
+                    { "order": 3, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "乙女の心臓" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250607_gyunou_fes_mini_2",
+                "title": "ギュウ農フェス mini SP (2部)",
+                "date": "2025.06.07",
+                "venue": "宇都宮",
+                "setlist": [
+                    { "order": 1, "song": "SE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "レディースコミック" },
+                    { "order": 4, "song": "CUTTING EDGE" },
+                    { "order": 5, "song": "draw (A) drow" },
+                    { "order": 6, "song": "天国ランキング" },
+                    { "order": 7, "song": "AGE OF ZOC" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250605_shibuya_shikisai",
+                "title": "#ﾆｷﾌﾟﾚ『シキサイ。』",
+                "date": "2025.06.05",
+                "venue": "渋谷近未来会館",
+                "setlist": [
+                    { "order": 1, "song": "SE" },
+                    { "order": 2, "song": "断捨離彼氏" },
+                    { "order": 3, "song": "JUSTadICE" },
+                    { "order": 4, "song": "BEGGiNG" },
+                    { "order": 5, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 6, "song": "乙女の心臓" },
+                    { "order": 7, "song": "family name" },
+                    { "order": 8, "song": "MC" },
+                    { "order": 9, "song": "ノーレシピ♡LOVE" },
+                    { "order": 10, "song": "最終形態前夜SCAPE" },
+                    { "order": 11, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250531_nanoha_bday",
+                "title": "なのは生誕祭2025-なのはなの~ お誕生日なの。",
+                "date": "2025.05.31",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "チュープリ" },
+                    { "order": 4, "song": "CUTTING EDGE" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "family name" },
+                    { "order": 7, "song": "イミテーションガール" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250523_seventh_sense",
+                "title": "GigiL定期公演「Seventh Sense」",
+                "date": "2025.05.23",
+                "venue": "渋谷スターラウンジ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "family name" },
+                    { "order": 3, "song": "CUTTING EDGE" },
+                    { "order": 4, "song": "SHINEMAGIC" },
+                    { "order": 5, "song": "CO LO s NA" },
+                    { "order": 6, "song": "draw (A) drow" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "ノーレシピ♡LOVE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250513_otsuka_survivetheparty",
+                "title": "BABYTANTS GO TO WWW!! VS 「 SURVIVE THE PARTY 」vol.3",
+                "date": "2025.05.13",
+                "venue": "大塚Hearts +",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "CO LO s NA" },
+                    { "order": 6, "song": "怪獣GIGA" },
+                    { "order": 7, "song": "draw (A) drow" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "BEGGiNG" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250511_musashino_carnival",
+                "title": "武蔵野音楽祭 蓮の音カーニバルプレミアム",
+                "date": "2025.05.11",
+                "venue": "吉祥寺WARP",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "GIRL'S GIRL'S" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "CUTTING EDGE" },
+                    { "order": 5, "song": "蒼夜ミルキーロード" },
+                    { "order": 6, "song": "レディースコミック" },
+                    { "order": 7, "song": "family name" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250506_kouenji_springpop",
+                "title": "Beat Happening！春絶対無限POP MUSIC達。",
+                "date": "2025.05.06",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "CRUSH ALONE" },
+                    { "order": 4, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "CUTTING EDGE" },
+                    { "order": 7, "song": "非国民的ヒーロー" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250505_meari_bday",
+                "title": "ゆるめるモ！めあり生誕〜merry merry meari〜",
+                "date": "2025.05.05",
+                "venue": "渋谷CYCLONE",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "乙女の心臓" },
+                    { "order": 5, "song": "family name" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "ノーレシピ♡LOVE(コラボ)" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250501_marz_himeizann",
+                "title": "月刊桃色椿宝座「悲名と斬」",
+                "date": "2025.05.01",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "ピンクメトセラ" },
+                    { "order": 5, "song": "レディースコミック" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "JUSTadICE" },
+                    { "order": 8, "song": "CRUSH ALONE" },
+                    { "order": 9, "song": "CO LO s NA" },
+                    { "order": 10, "song": "怪獣GIGA" },
+                    { "order": 11, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 12, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250426_haru_bday",
+                "title": "ねむいのはる誕生祭2025「#お誕生日ケーキうまいのはる」",
+                "date": "2025.04.26",
+                "venue": "新宿SAMURAI",
+                "setlist": [
+                    { "order": 1, "song": "ノーレシピ♡LOVE" },
+                    { "order": 2, "song": "IDOL SONG" },
+                    { "order": 3, "song": "蒼夜ミルキーロード" },
+                    { "order": 4, "song": "family name" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250419_marz_koushinzora",
+                "title": "月刊桃色椿宝座「更進と空」",
+                "date": "2025.04.19",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "怪獣GIGA" },
+                    { "order": 3, "song": "draw (A) drow" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "天国ランキング" },
+                    { "order": 7, "song": "蒼夜ミルキーロード" },
+                    { "order": 8, "song": "CUTTING EDGE" },
+                    { "order": 9, "song": "family name" },
+                    { "order": 10, "song": "ノーレシピ♡LOVE" },
+                    { "order": 11, "song": "BEGGiNG" },
+                    { "order": 12, "song": "EDSE" }
+                ],
+                "encore": [
+                    { "order": 1, "song": "mc" },
+                    { "order": 2, "song": "非国民的ヒーロー" }
+                ]
+            },
+            {
+                "id": "20250413_shibuya_pilgrim",
+                "title": "Pilgrim",
+                "date": "2025.04.13",
+                "venue": "渋谷音楽堂",
+                "setlist": [
+                    { "order": 1, "song": "ノーレシピ♡LOVE" },
+                    { "order": 2, "song": "CRUSH ALONE" },
+                    { "order": 3, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 4, "song": "怪獣GIGA" },
+                    { "order": 5, "song": "family name" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250403_asagaya_escape",
+                "title": "緊急開催「春爛漫からEscapeSP!!」",
+                "date": "2025.04.03",
+                "venue": "阿佐ヶ谷ロフトA",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "family name" },
+                    { "order": 3, "song": "蒼夜ミルキーロード" },
+                    { "order": 4, "song": "ひらいて" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250402_kouenji_kakumeizenya",
+                "title": "Beat Happening！革命前夜達！春MAX！",
+                "date": "2025.04.02",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "CO LO s NA" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "family name" },
+                    { "order": 5, "song": "ピンクメトセラ" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "怪獣GIGA" },
+                    { "order": 8, "song": "BEGGiNG" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250329_musashino_shuffle",
+                "title": "武蔵野音楽祭",
+                "date": "2025.03.29",
+                "venue": "吉祥寺SHUFFLE",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "非国民的ヒーロー" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 7, "song": "JUSTadICE" },
+                    { "order": 8, "song": "draw (A) drow" },
+                    { "order": 9, "song": "最終形態前夜SCAPE" },
+                    { "order": 10, "song": "天国ランキング" },
+                    { "order": 11, "song": "mc" },
+                    { "order": 12, "song": "レディースコミック" },
+                    { "order": 13, "song": "乙女の心臓" },
+                    { "order": 14, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250325_marz_tsubakihouza",
+                "title": "月刊桃色椿宝座「結液と哀」",
+                "date": "2025.03.25",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "乙女の心臓" },
+                    { "order": 4, "song": "CUTTING EDGE" },
+                    { "order": 5, "song": "レディースコミック" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "JUSTadICE" },
+                    { "order": 8, "song": "CO LO s NA" },
+                    { "order": 9, "song": "怪獣GIGA" },
+                    { "order": 10, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 11, "song": "最終形態前夜SCAPE" },
+                    { "order": 12, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250317_shibuya_biribiridans",
+                "title": "ELEVYZ presents \"ビリビリ団ズ\"",
+                "date": "2025.03.17",
+                "venue": "渋谷近未来会館",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "CRUSH ALONE" },
+                    { "order": 3, "song": "怪獣GIGA" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "BEGGiNG" },
+                    { "order": 6, "song": "ノーレシピ♡LOVE" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250310_kouenji_mugenpop",
+                "title": "Beat Happening！春MUGEN POP MUSIC！",
+                "date": "2025.03.10",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "SHINEMAGIC" },
+                    { "order": 3, "song": "GIRL'S GIRL" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 8, "song": "レディースコミック" },
+                    { "order": 9, "song": "family name" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250308_marz_fourshots",
+                "title": "SHINJUKU MARZ presents. FOUR SHOTS",
+                "date": "2025.03.08",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "イミテーションガール" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "CO LO s NA" },
+                    { "order": 5, "song": "draw (A) drow" },
+                    { "order": 6, "song": "怪獣GIGA" },
+                    { "order": 7, "song": "CUTTING EDGE" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250303_kouenji_hinamatsuri",
+                "title": "Beat Happening！高円寺でひなまつる夜！",
+                "date": "2025.03.03",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "CRUSH ALONE" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 7, "song": "蒼夜ミルキーロード" },
+                    { "order": 8, "song": "乙女の心臓" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250224_kurumi_bday",
+                "title": "EMPATHY #愛須くるみ生誕祭2025 ツインテールの宴vo.2",
+                "date": "2025.02.24",
+                "venue": "Holiday新宿",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "怪獣GIGA" },
+                    { "order": 7, "song": "family name" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250223_hina_bday",
+                "title": "海老一陽南生誕祭〜MIDDLE OF HEART〜",
+                "date": "2025.02.23",
+                "venue": "吉祥寺SHUFFLE",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "地球最後のふたり(陽南・すず奈)" },
+                    { "order": 5, "song": "LOW hAPPYENDROLL --少女のままで死ぬ--(陽南・つ輝)" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "ノーレシピ♡LOVE" },
+                    { "order": 8, "song": "EDSE" },
+                    { "order": 9, "song": " イミテーションガール(海老一陽南)" },
+                    { "order": 11, "song": "絶対絶望絶好調(海老一陽南)" },
+                    { "order": 12, "song": "counter culture(海老一陽南)" },
+                    { "order": 13, "song": "mc" },
+                    { "order": 14, "song": "幸内炎(海老一陽南)" },
+                    { "order": 15, "song": "流星ヘブン(海老一陽南)" },
+                    { "order": 16, "song": "最終形態前夜SCAPE(海老一陽南)" },
+                    { "order": 17, "song": "怪獣GIGA(海老一陽南)" },
+                    { "order": 18, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250218_kouenji_kakumei",
+                "title": "Beat Happening！革命前夜達！",
+                "date": "2025.02.18",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "AGE OF ZOC" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "draw (A) drow" },
+                    { "order": 6, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 7, "song": "CUTTING EDGE" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250216_releaseevent_final",
+                "title": "『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベントファイナル",
+                "date": "2025.02.16",
+                "venue": "タワーレコード新宿",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "family name" },
+                    { "order": 5, "song": "怪獣GIGA" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250215_musashino_carnival_2025",
+                "title": "武蔵野音楽祭 蓮の音カーニバル2025",
+                "date": "2025.02.15",
+                "venue": "吉祥寺 ",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "CRUSH ALONE" },
+                    { "order": 4, "song": "ピンクメトセラ" },
+                    { "order": 5, "song": "乙女の心臓" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250210_releaseevent_shibuya",
+                "title": "『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2025.02.10",
+                "venue": "HMV&BOOKS SHIBUYA",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "最終形態前夜SCAPE - 海老一陽南 solo edit" },
+                    { "order": 5, "song": "最終形態前夜SCAPE - 北川すず奈 solo edit" },
+                    { "order": 6, "song": "最終形態前夜SCAPE - 東出つ輝 solo edit" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250202_kouenji_one_man_1",
+                "title": "最終形態前夜のノーレシピ♡ワンマン 1部〜少女爆発編〜",
+                "date": "2025.02.02",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "乙女の心臓" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "蒼夜ミルキーロード" },
+                    { "order": 6, "song": "怪獣GIGA" },
+                    { "order": 7, "song": "レディースコミック" },
+                    { "order": 8, "song": "mc" },
+                    { "order": 9, "song": "GIRL'S GIRL" },
+                    { "order": 10, "song": "絶対彼女" },
+                    { "order": 11, "song": "イミテーションガール" },
+                    { "order": 12, "song": "CRUSH ALONE" },
+                    { "order": 13, "song": "mc" },
+                    { "order": 14, "song": "ひらいて" },
+                    { "order": 15, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": [
+                    { "order": 1, "song": "IDOL SONG" },
+                    { "order": 2, "song": "EDSE" }
+                ]
+            },
+            {
+                "id": "20250202_kouenji_one_man_2",
+                "title": "最終形態前夜のノーレシピ♡ワンマン 2部〜少年爆発編〜",
+                "date": "2025.02.02",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "OPSE" },
+                    { "order": 2, "song": "BEGGiNG" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "AGE OF ZOC" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "天国ランキング" },
+                    { "order": 7, "song": "family name" },
+                    { "order": 8, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 9, "song": "draw (A) drow" },
+                    { "order": 10, "song": "mc" },
+                    { "order": 11, "song": "SHINEMAGIC" },
+                    { "order": 12, "song": "CRUSH ALONE" },
+                    { "order": 13, "song": "怪獣GIGA" },
+                    { "order": 14, "song": "mc" },
+                    { "order": 15, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": [
+                    { "order": 1, "song": "非国民的ヒーロー" },
+                    { "order": 2, "song": "EDSE" }
+                ]
+            },
+            {
+                "id": "20250130_releaseevent_ikebukuro",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2025.01.30",
+                "venue": "タワーレコード池袋店",
+                "setlist": [
+                    { "order": 1, "song": "チュープリ" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "CUTTING EDGE" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250126_shimokita_chemistry",
+                "title": "Chemistry LiVE with LiVS",
+                "date": "2025.01.26",
+                "venue": "下北沢ADRIFT",
+                "setlist": [
+                    { "order": 1, "song": "ノーレシピ♡LOVE" },
+                    { "order": 2, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 3, "song": "CO LO s NA" },
+                    { "order": 4, "song": "draw (A) drow" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250120_releaseevent_ikebukuro",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2025.01.20",
+                "venue": "タワーレコード池袋店",
+                "setlist": [
+                    { "order": 1, "song": "ノーレシピ♡LOVE" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 4, "song": "ピンクメトセラ" },
+                    { "order": 5, "song": "最終形態前夜SCAPE - 北川すず奈 solo edit" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250116_releaseevent_kinshicho",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2025.01.16",
+                "venue": "錦糸町パルコ店",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "怪獣GIGA" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250115_kouenji_rock",
+                "title": "Beat Happening！ROCKの形が無限大となる夜！",
+                "date": "2025.01.15",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "AGE OF ZOC" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "CUTTING EDGE" },
+                    { "order": 5, "song": "ピンクメトセラ" },
+                    { "order": 6, "song": "family name" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250112_shimokita_icondolllounge",
+                "title": "iCON DOLL LOUNGE 2025 ~ Re:union ~",
+                "date": "2025.01.12",
+                "venue": "下北沢シャングリラ",
+                "setlist": [
+                    { "order": 1, "song": "ヒアルロンリーガール" },
+                    { "order": 2, "song": "AGE OF ZOC" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "CO LO s NA" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250110_releaseevent_ikebukuro",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2025.01.10",
+                "venue": "タワーレコード池袋店",
+                "setlist": [
+                    { "order": 1, "song": "CUTTING EDGE" },
+                    { "order": 2, "song": "蒼夜ミルキーロード" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "最終形態前夜SCAPE - 東出つ輝 solo edit" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250108_releaseevent_shibuya",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2025.01.08",
+                "venue": "HMV&BOOKS SHIBUYA",
+                "setlist": [
+                    { "order": 1, "song": "イミテーションガール" },
+                    { "order": 2, "song": "蒼夜ミルキーロード" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250106_releaseevent_shinjuku",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2025.01.06",
+                "venue": "タワーレコード新宿店9F イベントスペース",
+                "setlist": [
+                    { "order": 1, "song": "ノーレシピ♡LOVE" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "非国民的ヒーロー" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250105_gyuunou_mini",
+                "title": "ギュウ農フェス mini 金蛇迎春 Year of the ヘビーローテーション",
+                "date": "2025.01.05",
+                "venue": "大塚ハーツ+",
+                "setlist": [
+                    { "order": 1, "song": "AGE OF ZOC" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "BEGGiNG" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 6, "song": "怪獣GIGA" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20250105_releaseevent_laketown",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2025.01.05",
+                "venue": "イオンレイクタウン ヴィレッジヴァンガードPLUS",
+                "setlist": [
+                    { "order": 1, "song": "family name" },
+                    { "order": 2, "song": "CUTTING EDGE" },
+                    { "order": 3, "song": "最終形態前夜SCAPE" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "ノーレシピ♡LOVE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241227_releaseevent_shiodome",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2024.12.27",
+                "venue": "汐留シオサイト",
+                "setlist": [
+                    { "order": 1, "song": "ノーレシピ♡LOVE" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "AGE OF ZOC" },
+                    { "order": 4, "song": "BEGGiNG" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241223_releaseevent_kinshicho",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2024.12.23",
+                "venue": "タワーレコード錦糸町パルコ店",
+                "setlist": [
+                    { "order": 1, "song": "A INNOCENCE" },
+                    { "order": 2, "song": "family name" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "ノーレシピ♡LOVE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241221_nishieifuku_seiton",
+                "title": "整頓 vol.08 年末SP",
+                "date": "2024.12.21",
+                "venue": "西永福JAM",
+                "setlist": [
+                    { "order": 1, "song": "ノーレシピ♡LOVE" },
+                    { "order": 2, "song": "イミテーションガール" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "CUTTING EDGE" },
+                    { "order": 5, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" },
+                    { "order": 7, "song": "非国民的ヒーロー" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241219_musashino_shuffle",
+                "title": "武蔵野音楽祭",
+                "date": "2024.12.19",
+                "venue": "吉祥寺SHUFFLE",
+                "setlist": [
+                    { "order": 1, "song": "ピンクメトセラ" },
+                    { "order": 2, "song": "CUTTING EDGE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "AGE OF ZOC" },
+                    { "order": 5, "song": "ノーレシピ♡LOVE" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "怪獣GIGA" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241217_releaseevent_kabukicho",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2024.12.17",
+                "venue": "東急歌舞伎町タワー",
+                "setlist": [
+                    { "order": 1, "song": "ヒアルロンリーガール" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "JUSTadICE" },
+                    { "order": 5, "song": "怪獣GIGA" },
+                    { "order": 6, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241212_releaseevent_kameido",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2024.12.12",
+                "venue": "カメイドクロック カメクロコート",
+                "setlist": [
+                    { "order": 1, "song": "蒼夜ミルキーロード" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "IDOL SONG" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241207_kanda_nikipure",
+                "title": "#ﾆｷﾌﾟﾚ -ミツドモエ。-",
+                "date": "2024.12.07",
+                "venue": "神田CLUB F#",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "mc" },
+                    { "order": 3, "song": "ノーレシピ♡LOVE" },
+                    { "order": 4, "song": "GIRL'S GIRL" },
+                    { "order": 5, "song": "CUTTING EDGE" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "CO LO s NA" },
+                    { "order": 8, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 9, "song": "最終形態前夜SCAPE" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241205_shibuya_beat_happening",
+                "title": "Beat Happening！音楽は。人生のスパイスである。",
+                "date": "2024.12.05",
+                "venue": "渋谷CHELSEA HOTEL",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "CO LO s NA" },
+                    { "order": 5, "song": "draw (A) drow" },
+                    { "order": 6, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "family name" },
+                    { "order": 9, "song": "最終形態前夜SCAPE" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241204_releaseevent_shinjuku",
+                "title": "Debut Single『ノーレシピ♡LOVE/最終形態前夜SCAPE』リリースイベント",
+                "date": "2024.12.04",
+                "venue": "タワーレコード新宿店",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "怪獣GIGA" },
+                    { "order": 5, "song": "最終形態前夜SCAPE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241128_shibuya_rnr_panic",
+                "title": "Beat Happening！渋谷R&R PANIC！",
+                "date": "2024.11.28",
+                "venue": "渋谷LUSH",
+                "setlist": [
+                    { "order": 1, "song": "AGE OF ZOC" },
+                    { "order": 2, "song": "SHINEMAGIC" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 6, "song": "怪獣GIGA" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "最終形態前夜SCAPE" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241126_shibuya_tour",
+                "title": "灼熱旋風雷神TOUR 2024 東京編",
+                "date": "2024.11.26",
+                "venue": "渋谷近未来会館",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "怪獣GIGA" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "チュープリ" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "最終形態前夜SCAPE" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241120_kouenji_entertainment_panic",
+                "title": "Beat Happening！ビーハプ秋のエンタメPANIC！",
+                "date": "2024.11.20",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "ノーレシピ♡LOVE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "最終形態前夜SCAPE" },
+                    { "order": 5, "song": "family name" },
+                    { "order": 6, "song": "怪獣GIGA" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "非国民的ヒーロー" },
+                    { "order": 9, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241117_tsuki_bday_day",
+                "title": "つ輝の夜かと思いきやお昼の生誕祭♡ 〜徹底解剖編〜",
+                "date": "2024.11.17",
+                "venue": "新宿 ROCK CAFE LOFT",
+                "setlist": [
+                    { "order": 1, "song": "ANTI SOCIAL PRINCESS" },
+                    { "order": 2, "song": "きゅるきゅる" },
+                    { "order": 3, "song": "君と映画（弾き語り）" },
+                    { "order": 4, "song": "東京と今日（弾き語り）" },
+                    { "order": 5, "song": "mc" },
+                    { "order": 6, "song": "わたしみ" },
+                    { "order": 7, "song": "真夏の卒業式" },
+                    { "order": 8, "song": "mc" },
+                    { "order": 9, "song": "ロックンロールパラダイス" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241111_marz_gyodoushinn",
+                "title": "椿宝座・THE PINK MINDS MARZ合同公演『挙動と心』",
+                "date": "2024.11.11",
+                "venue": "新宿MARZ",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "最終形態前夜SCAPE" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "ノーレシピ♡LOVE" },
+                    { "order": 5, "song": "GIRL'S GIRL" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "AGE OF ZOC" },
+                    { "order": 8, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 9, "song": "CUTTING EDGE" },
+                    { "order": 10, "song": "mc" },
+                    { "order": 11, "song": "怪獣GIGA" },
+                    { "order": 12, "song": "mc" },
+                    { "order": 13, "song": "最終形態前夜SCAPE" },
+                    { "order": 14, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241010_shibuya_nikipure",
+                "title": "#ﾆｷﾌﾟﾚ -ミツドモエ。-",
+                "date": "2024.10.10",
+                "venue": "渋谷近未来会館",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "怪獣GIGA" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "チュープリ" },
+                    { "order": 5, "song": "GIRL'S GIRL" },
+                    { "order": 6, "song": "断捨離彼氏" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "family name" },
+                    { "order": 9, "song": "非国民的ヒーロー" },
+                    { "order": 10, "song": "天国ランキング" },
+                    { "order": 11, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20241003_kouenji_saikou_music",
+                "title": "Beat Happening！高円寺にて最高ミュージック！",
+                "date": "2024.10.03",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 2, "song": "怪獣GIGA" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "チュープリ" },
+                    { "order": 5, "song": "非国民的ヒーロー" },
+                    { "order": 6, "song": "天国ランキング" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20240923_yokohama_abc_idol",
+                "title": "ABC IDOL",
+                "date": "2024.09.23",
+                "venue": "YOKOHAMA COAST garage+",
+                "setlist": [
+                    { "order": 1, "song": "イミテーションガール" },
+                    { "order": 2, "song": "GIRL'S GIRL" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "family name" },
+                    { "order": 5, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 6, "song": "怪獣GIGA" },
+                    { "order": 7, "song": "mc" },
+                    { "order": 8, "song": "マジックミラー" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20240921_omotesando_musasabeast3",
+                "title": "MUSASABEAST3",
+                "date": "2024.09.21",
+                "venue": "表参道WALL&WALL",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "CO LO s NA" },
+                    { "order": 3, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "非国民的ヒーロー" },
+                    { "order": 6, "song": "family name" },
+                    { "order": 7, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20240920_kouenji_hit_run",
+                "title": "Beat Happening！金曜夜のヒット＆ラン！",
+                "date": "2024.09.20",
+                "venue": "高円寺HIGH",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 3, "song": "mc" },
+                    { "order": 4, "song": "AGE OF ZOC" },
+                    { "order": 5, "song": "draw (A) drow" },
+                    { "order": 6, "song": "mc" },
+                    { "order": 7, "song": "怪獣GIGA" },
+                    { "order": 8, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20240908_shimokita_chemistry",
+                "title": "Chemistry LiVE with LiVS",
+                "date": "2024.09.08",
+                "venue": "下北沢SHELTER",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "怪獣GIGA" },
+                    { "order": 3, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 4, "song": "mc" },
+                    { "order": 5, "song": "チュープリ" },
+                    { "order": 6, "song": "断捨離彼氏" },
+                    { "order": 7, "song": "GIRL'S GIRL" },
+                    { "order": 8, "song": "mc" },
+                    { "order": 9, "song": "AGE OF ZOC" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            },
+            {
+                "id": "20240905_shibuya_nikipure",
+                "title": "#ﾆｷﾌﾟﾚ -ミツドモエ。-",
+                "date": "2024.09.05",
+                "venue": "渋谷近未来会館",
+                "setlist": [
+                    { "order": 1, "song": "BEGGiNG" },
+                    { "order": 2, "song": "AGE OF ZOC" },
+                    { "order": 3, "song": "SHINEMAGIC" },
+                    { "order": 4, "song": "MC" },
+                    { "order": 5, "song": "断捨離彼氏" },
+                    { "order": 6, "song": "CO LO s NA" },
+                    { "order": 7, "song": "DON'T TRUST TEENAGER" },
+                    { "order": 8, "song": "draw (A) drow" },
+                    { "order": 9, "song": "family name" },
+                    { "order": 10, "song": "EDSE" }
+                ],
+                "encore": []
+            }
+
+        ];
+        const modal = document.getElementById('setlistModal');
+        const modalBody = document.getElementById('modal-body');
+        const closeBtn = document.getElementsByClassName('close-btn')[0];
+
+        // モーダルを閉じる処理
+        closeBtn.onclick = function () {
+            modal.style.display = 'none';
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        /**
+         * ライブデータを解析し、楽曲の歌唱回数ランキングを計算する
+         * @returns {Array<Object>} ランキングデータ（歌唱回数の降順）
+         */
+        function calculateRankings() {
+            const songCounts = {};
+            // カウント対象外のキーワードを大文字小文字を区別せずチェックするために配列に含める
+            const ignoreKeywords = ['MC', 'OPSE', 'EDSE', '-----'];
+
+            ALL_LIVE_DATA.forEach(live => {
+                const allSongs = [...live.setlist, ...live.encore];
+
+                allSongs.forEach(item => {
+                    let songName = item.song.trim();
+                    const songNameUpper = songName.toUpperCase();
+
+                    // カウント対象外のキーワードが含まれていないかチェック
+                    const isIgnored = ignoreKeywords.some(keyword => songNameUpper.includes(keyword));
+
+                    // メンバー名を含む特殊な表記を正規化する（例: ANTI SOCIAL PRINCESS（つ輝） -> ANTI SOCIAL PRINCESS）
+                    songName = songName.replace(/\（[^）]+\）/g, '').trim();
+
+                    if (songName && !isIgnored) {
+                        songCounts[songName] = (songCounts[songName] || 0) + 1;
+                    }
+                });
+            });
+
+            // オブジェクトを配列に変換し、回数で降順にソート
+            const rankingArray = Object.keys(songCounts).map(song => ({
+                song: song,
+                count: songCounts[song]
+            })).sort((a, b) => b.count - a.count);
+
+            return rankingArray;
+        }
+
+        /**
+         * 歌唱回数ランキングを画面に表示する
+         * @param {Array<Object>} rankings - ランキングデータ
+         */
+        function displayRankings(rankings) {
+            const rankingSection = document.getElementById('ranking');
+            if (!rankingSection) return;
+
+            let rankingHtml = '<ol class="ranking-list">';
+            rankings.forEach((item, index) => {
+                let rankDisplay = index + 1;
+                let rankClass = '';
+                if (rankDisplay === 1) rankClass = 'rank-gold';
+                else if (rankDisplay === 2) rankClass = 'rank-silver';
+                else if (rankDisplay === 3) rankClass = 'rank-bronze';
+
+                rankingHtml += `
+                    <li>
+                        <span class="rank-number ${rankClass}">${rankDisplay}</span>
+                        <span class="song-name">${item.song}</span>
+                        <span class="count">(${item.count} 回)</span>
+                    </li>
+                `;
+            });
+            rankingHtml += '</ol>';
+            rankingSection.innerHTML = rankingHtml;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const setlistsSection = document.getElementById('setlists');
+
+            // ライブ一覧表示のためのソート処理
+            const sortedData = [...ALL_LIVE_DATA].sort((a, b) => {
+                if (a.date < b.date) return 1;
+                if (a.date > b.date) return -1;
+                return 0;
+            });
+
+            // ソートされたデータを使ってカードを生成
+            setlistsSection.innerHTML = '';
+            sortedData.forEach(live => {
+                const cardHtml = `
+                <div class="setlist-card">
+                    <a href="#" class="card-link-title" onclick="showSetlistDetail('${live.id}'); return false;">
+                        <h3>${live.date} - ${live.title}</h3> 
+                    </a>
+                </div>
+            `;
+                setlistsSection.innerHTML += cardHtml;
+            });
+
+            // 歌唱回数ランキングの計算と表示を実行
+            const rankings = calculateRankings();
+            displayRankings(rankings);
+        });
+
+        // 詳細ページ（モーダル）を表示する関数
+        function showSetlistDetail(liveId) {
+            const live = ALL_LIVE_DATA.find(item => item.id === liveId);
+            if (!live) return;
+
+            let listHtml = '';
+
+            // 本編の曲目リスト
+            live.setlist.forEach(item => {
+                listHtml += `<li><span class="song-number">${item.order}.</span> ${item.song}</li>`;
+            });
+
+            // アンコールの曲目リスト
+            live.encore.forEach(item => {
+                if (listHtml.slice(-4) !== '<hr>') {
+                    listHtml += '<hr>';
+                }
+                listHtml += `<li><span class="song-number">${item.order}.</span> ${item.song} <span class="encore">アンコール</span></li>`;
+            });
+
+            // モーダルにHTMLを挿入
+            modalBody.innerHTML = `
+            <h2>${live.title} - セットリスト</h2>
+            <p><strong>日付:</strong> ${live.date} / <strong>会場:</strong> ${live.venue}</p>
+            <hr>
+            <ul class="song-list">${listHtml}</ul>
+        `;
+
+            // モーダルを表示
+            modal.style.display = 'block';
+        }// ★★★ ここから下に追加します ★★★
+        // ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+        // =========================================================================
+        // 🏆 ランキング集計ロジックの追加（除外ルールを適用）
+        // =========================================================================
+
+        /**
+         * セットリストの項目をランキング集計から除外するかを判定する関数
+         * @param {string} songName - セットリストの曲名（アイテム名）
+         * @returns {boolean} - 除外する場合: true, 集計に含める場合: false
+         */
+        function shouldExclude(songName) {
+            const name = songName.trim();
+
+            // 1. 大文字・小文字を無視して、MC/SE系を除外
+            const upperName = name.toUpperCase();
+            if (upperName === 'MC' || upperName === 'SE' || upperName === 'OPSE' || upperName === 'EDSE' || name === '-----') {
+                return true;
+            }
+
+            // 2. 「solo edit」を含むものを除外
+            if (name.includes('solo edit')) {
+                return true;
+            }
+
+            // 3. 括弧を含むものを除外（バリエーションや音先、メンバー名が入った特殊な表記など）
+            // 例: ANTI SOCIAL PRINCESS（つ輝）, DON'T TRUST TEENAGER(音先)
+            if (name.includes('(') || name.includes('（')) {
+                return true;
+            }
+
+            return false; // 上記のどれにも該当しない場合は集計に含める
+        }
+
+        function generateRanking(lives) {
+            const songCounts = {};
+
+            lives.forEach(live => {
+                // 本編のセットリストをカウント
+                live.setlist.forEach(item => {
+                    if (!shouldExclude(item.song)) {
+                        const key = item.song.trim();
+                        songCounts[key] = (songCounts[key] || 0) + 1;
+                    }
+                });
+
+                // アンコールのセットリストをカウント (存在する場合)
+                live.encore.forEach(item => {
+                    if (!shouldExclude(item.song)) {
+                        const key = item.song.trim();
+                        songCounts[key] = (songCounts[key] || 0) + 1;
+                    }
+                });
+            });
+
+            // 回数が多い順にソート
+            const rankingArray = Object.entries(songCounts)
+                .map(([song, count]) => ({ song, count }))
+                .sort((a, b) => b.count - a.count);
+
+            return rankingArray;
+        }
+
+        function renderRanking() {
+            const rankingData = generateRanking(ALL_LIVE_DATA);
+            const rankingDiv = document.getElementById('ranking');
+
+            let html = '<ol class="ranking-list">';
+            rankingData.forEach((item, index) => {
+                let rankClass = '';
+                if (index === 0) rankClass = 'rank-gold';
+                else if (index === 1) rankClass = 'rank-silver';
+                else if (index === 2) rankClass = 'rank-bronze';
+
+                html += `
+                    <li>
+                        <div class="rank-number ${rankClass}">${index + 1}</div>
+                        <div class="song-name">${item.song}</div>
+                        <div class="count">${item.count} 回</div>
+                    </li>
+                `;
+            });
+            html += '</ol>';
+            rankingDiv.innerHTML = html;
+        }
+
+        // =========================================================================
+        // ライブ一覧表示ロジック（既存のコードに追加）
+        // =========================================================================
+        function renderSetlists() {
+            const setlistsDiv = document.getElementById('setlists');
+            let html = '';
+
+            // 日付の新しい順にソート（dateをYY.MM.DD形式として比較）
+            const sortedLives = [...ALL_LIVE_DATA].sort((a, b) => {
+                return b.date.localeCompare(a.date);
+            });
+
+            sortedLives.forEach(live => {
+                html += `
+                    <div class="setlist-card">
+                        <a href="#" class="card-link-title" onclick="openModal('${live.id}'); return false;">
+                            <h3>${live.date} ${live.title}</h3>
+                        </a>
+                    </div>
+                `;
+            });
+
+            setlistsDiv.innerHTML = html;
+        }
+
+        function openModal(liveId) {
+            const live = ALL_LIVE_DATA.find(l => l.id === liveId);
+            if (!live) return;
+
+            const modalBody = document.getElementById('modal-body');
+            let setlistHtml = `
+                <h2>${live.title}</h2>
+                <p><strong>日付:</strong> ${live.date}</p>
+                <p><strong>会場:</strong> ${live.venue}</p>
+                <hr>
+                <h3>セットリスト</h3>
+                <ol class="song-list">
+            `;
+
+            live.setlist.forEach(item => {
+                setlistHtml += `<li><span class="song-number">${item.order}.</span> ${item.song}</li>`;
+            });
+
+            if (live.encore && live.encore.length > 0) {
+                setlistHtml += `
+                    </ol>
+                    <hr>
+                    <h3>アンコール</h3>
+                    <ol class="song-list">
+                `;
+                live.encore.forEach(item => {
+                    setlistHtml += `<li><span class="song-number">${item.order}.</span> ${item.song} <span class="encore">EN</span></li>`;
+                });
+            }
+
+            setlistHtml += `</ol>`;
+            modalBody.innerHTML = setlistHtml;
+
+            document.getElementById('setlistModal').style.display = 'block';
+        }
+
+        // モーダルを閉じる処理
+        document.querySelector('.close-btn').onclick = function () {
+            document.getElementById('setlistModal').style.display = 'none';
+        }
+
+        // モーダルの外側をクリックで閉じる処理
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('setlistModal')) {
+                document.getElementById('setlistModal').style.display = 'none';
+            }
+        }
+
+        // ページロード時に実行
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSetlists();
+            renderRanking(); // ランキング集計と表示も実行
+        });
+
+        // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+    </script>
+</body>
+
+</html>
