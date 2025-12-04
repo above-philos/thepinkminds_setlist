@@ -95,6 +95,8 @@ h2 {
     margin: 0;
     font-size: 1.2em;
     color: #333;
+    white-space: normal;      /* 必須：折り返しを許可（デフォルト値ですが念のため） */
+    word-break: break-word;  
 }
 
 .setlist-card .venue {
