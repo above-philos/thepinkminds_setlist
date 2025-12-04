@@ -186,3 +186,16 @@ footer {
 .setlist-card .venue {
     margin-top: 5px;
 }
+
+/* 1. PCサイズ（デフォルト）では改行タグを非表示にする */
+.sp-only {
+    display: none;
+}
+
+/* 2. スマホサイズ（例: 画面幅768px以下）でのみ改行タグを表示する */
+@media (max-width: 768px) {
+    .sp-only {
+        /* 非表示を解除し、改行として機能させる */
+        display: block; 
+    }
+}
