@@ -3,39 +3,46 @@ body {
     font-family: 'Arial', 'Meiryo', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8; /* 背景は少し明るめに */
+    background-color: #fff9f5; /* 非常に薄いオレンジ系の背景 */
     color: #333;
+    line-height: 1.6;
 }
 
 .container {
     width: 90%;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
-/* --- ヘッダー（青基調） --- */
+/* --- ヘッダー（オレンジ基調） --- */
 header {
-    background-color: #007bff; /* メインカラーの青 */
+    background-color: #ff8c00; /* 鮮やかなオレンジ */
     color: white;
-    padding: 30px 0;
+    padding: 40px 0;
     text-align: center;
+    /* 下側に青の太いラインを入れ、ナビとの境界を強調 */
+    border-bottom: 8px solid #1e90ff; 
 }
 
 header h1 {
     margin: 0;
-    font-size: 2.5em;
-    letter-spacing: 2px;
+    font-size: 2.8em; 
+    letter-spacing: 1.5px;
+    white-space: nowrap; 
+    overflow: hidden;
+    font-weight: 800;
 }
 
 header p {
     margin-top: 5px;
-    font-size: 1em;
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* --- ナビゲーション（ピンク基調） --- */
 nav {
-    background-color: #ff69b4; /* ピンク */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ff69b4; /* ポップなピンク */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 強めのシャドウ */
 }
 
 nav ul {
@@ -44,6 +51,7 @@ nav ul {
     margin: 0;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap; 
 }
 
 nav ul li a {
@@ -61,141 +69,126 @@ nav ul li a:hover {
 
 /* --- メインコンテンツ --- */
 main {
-    padding: 40px 0;
+    padding: 50px 0;
 }
 
 section {
-    margin-bottom: 40px;
-    padding: 20px;
+    margin-bottom: 50px;
+    padding: 30px;
     background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 12px; /* 角を大きく丸く */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08); /* 立体感のあるシャドウ */
 }
 
 h2 {
-    color: #007bff; /* 見出しは青 */
-    border-bottom: 2px solid #ff9933; /* オレンジのラインで区切り */
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    color: #ff8c00; /* 見出しはオレンジ */
+    border-bottom: none; 
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    position: relative;
+    font-weight: 700;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 5px; /* 太いライン */
+    background-color: #1e90ff; /* 青の強調ライン */
+    border-radius: 3px;
 }
 
 /* --- セトリカード（一覧） --- */
 .setlist-card {
-    background-color: #fff3e6; /* 薄いオレンジの背景で目立たせる */
-    border-left: 5px solid #ff9933; /* オレンジのアクセント */
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 4px;
+    background-color: white; 
+    /* 左側と下側にボーダーを付けるアシンメトリーなデザイン */
+    border-left: 6px solid #ff8c00; /* オレンジの強調 */
+    border-bottom: 1px solid #e0e0e0; 
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 8px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+
+.setlist-card:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px); 
+    border-left: 6px solid #1e90ff; /* ここも青に合わせる */
 }
 
 .setlist-card h3 {
     margin: 0;
-    font-size: 1.2em;
-    color: #333;
-    white-space: normal;      /* 必須：折り返しを許可（デフォルト値ですが念のため） */
-    word-break: break-word;  
+    font-size: 1.4em;
+    color: #1e90ff; /* オレンジから青に変更 */
+    transition: color 0.2s; /* 色の変化を滑らかに */
 }
 
 .setlist-card .venue {
     color: #666;
-    font-size: 0.9em;
-}
-
-.detail-btn {
-    background-color: #ff69b4; /* ボタンはピンク */
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.detail-btn:hover {
-    background-color: #ff45a6;
+    font-size: 1em;
+    margin-top: 5px;
 }
 
 /* --- ランキングアイテム --- */
 .ranking-item {
-    padding: 10px 15px;
-    margin-bottom: 10px;
-    border-radius: 4px;
+    padding: 18px 25px; /* パディングを増やして存在感を出す */
+    margin-bottom: 15px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    font-weight: bold;
+    font-weight: 700;
     color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); 
 }
 
 .ranking-item .rank {
-    font-size: 1.5em;
-    margin-right: 15px;
-    font-style: italic;
-}
-
-.ranking-item .title {
-    font-size: 1.1em;
+    font-size: 2em;
+    margin-right: 25px;
+    font-style: normal;
+    font-weight: 900;
 }
 
 /* ランキングごとの色分け */
-.blue-accent { background-color: #007bff; }
-.orange-accent { background-color: #ff9933; }
-.pink-accent { background-color: #ff69b4; }
+.blue-accent { background-color: #1e90ff; } /* 鮮やかな青 */
+.orange-accent { background-color: #ff8c00; } /* 鮮やかなオレンジ */
+.pink-accent { background-color: #ff69b4; } /* ポップなピンク */
 
 
 /* --- フッター --- */
 footer {
-    background-color: #333;
+    background-color: #1e90ff; /* 青をフッターに使用 */
     color: white;
     text-align: center;
-    padding: 15px 0;
-    font-size: 0.8em;
+    padding: 20px 0;
+    font-size: 0.9em;
 }
 
-/* --- 追加CSS: タイトルをリンク化してデザインを整える --- */
+/* --- タイトルリンクのホバーエフェクト --- */
 .card-link-title {
-    /* リンクのデフォルト装飾を解除 */
     text-decoration: none; 
-    color: inherit; /* 親要素（.setlist-card）の色を継承 */
-    display: block; /* クリック領域を広げる */
-    flex-grow: 1; /* スペース全体を使う */
+    color: inherit; 
+    display: block; 
+    flex-grow: 1; 
 }
 
-/* ホバー時の装飾：クリックできることを視覚的に示す */
 .card-link-title:hover h3 {
-    color: #ff69b4; /* ホバーでピンクに変化 */
-    text-decoration: underline; /* 下線を引く */
-    transition: color 0.2s;
+    color: #ff69b4; 
+    text-decoration: none;
 }
 
-/* セトリカード内のボタンは不要になったので非表示にする */
+/* 不要な要素の非表示は維持 */
 .detail-btn {
     display: none;
 }
-
-/* .setlist-card のレイアウトを修正 (タイトルが広い領域を持つように) */
 .setlist-card {
-    /* flex-direction: column; が適切かもしれませんが、既存のデザインを維持しつつ調整します */
-    align-items: flex-start; /* タイトルを左寄せに */
-    flex-direction: column;
+    align-items: flex-start;
 }
-
-/* venueとタイトルを少し離す */
 .setlist-card .venue {
     margin-top: 5px;
 }
 
-/* 1. PCサイズ（デフォルト）では改行タグを非表示にする */
-.sp-only {
-    display: none;
-}
-
-/* 2. スマホサイズ（例: 画面幅768px以下）でのみ改行タグを表示する */
-@media (max-width: 768px) {
-    .sp-only {
-        /* 非表示を解除し、改行として機能させる */
-        display: block; 
-    }
-}
