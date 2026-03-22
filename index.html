@@ -2793,7 +2793,7 @@
         function calculateRankings() {
             const songCounts = {};
             // カウント対象外のキーワードを大文字小文字を区別せずチェックするために配列に含める
-            const ignoreKeywords = ['MC', 'OPSE', 'EDSE', '-----'];
+            const ignoreKeywords = ['MC', 'OPSE', 'EDSE', '-----', 'mc', '告知', '写真撮影・告知', '写真撮影',];
 
             ALL_LIVE_DATA.forEach(live => {
                 const allSongs = [...live.setlist, ...live.encore];
